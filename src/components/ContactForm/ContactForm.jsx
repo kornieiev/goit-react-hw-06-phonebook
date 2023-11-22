@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
+import { nameChange } from '../../redux/nameSlice';
+import { numberChange } from '../../redux/numberSlice';
 
 import {
   PhonebookWrap,
@@ -10,10 +12,10 @@ import {
 } from './ContactForm.styled';
 
 export default function ContactForm({ addNewContact }) {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const name = useSelector(state => state.name);
+  const number = useSelector(state => state.number);
 
-  useEffect(() => {}, [name, number]);
+  const dispatch = useDispatch();
 
   const handleBtnClick = e => {
     e.preventDefault();
@@ -21,24 +23,25 @@ export default function ContactForm({ addNewContact }) {
       return;
     }
     addNewContact({ id: nanoid(), name, number });
-    setName('');
-    setNumber('');
+    dispatch(nameChange(''));
+    dispatch(numberChange(''));
   };
 
   const handleInputChange = e => {
     e.preventDefault();
     switch (e.target.name) {
       case 'name':
-        setName(e.target.value);
+        dispatch(nameChange(e.target.value));
+
         break;
       case 'number':
-        setNumber(e.target.value);
+        dispatch(numberChange(e.target.value));
+
         break;
       default:
         console.log(`Unknown input ${name}`);
     }
   };
-
   return (
     <div>
       <PhonebookWrap onSubmit={handleBtnClick}>
