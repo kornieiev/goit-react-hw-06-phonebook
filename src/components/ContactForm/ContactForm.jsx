@@ -1,9 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { nameChange } from '../../redux/nameSlice';
 import { numberChange } from '../../redux/numberSlice';
-
 import {
   PhonebookWrap,
   FormButton,
@@ -73,7 +71,3 @@ export default function ContactForm({ addNewContact }) {
     </div>
   );
 }
-
-ContactForm.propTypes = {
-  props: PropTypes.array.isRequired,
-};

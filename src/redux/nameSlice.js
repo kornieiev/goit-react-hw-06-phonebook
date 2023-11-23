@@ -4,7 +4,9 @@ export const nameSlice = createSlice({
   name: 'name',
   initialState: '',
   reducers: {
-    nameChange: (state, action) => action.payload,
+    nameChange: (state, action) => {
+      return action.payload;
+    },
   },
 });
 

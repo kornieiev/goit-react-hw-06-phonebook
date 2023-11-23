@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { contactsDelete } from '../../redux/contactsSlice';
-
+import { contactDelete } from '../../redux/contactsSlice';
 import { ListItem, DeleteButton } from './ContactList.styled';
 
 export default function ContactList() {
@@ -21,7 +20,7 @@ export default function ContactList() {
   };
 
   const deleteContact = id => {
-    dispatch(contactsDelete(id));
+    dispatch(contactDelete(id));
   };
 
   return (

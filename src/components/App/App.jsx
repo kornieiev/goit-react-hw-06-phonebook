@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import ContactForm from '../ContactForm/ContactForm';
 import ContactList from '../ContactList/ContactList';
 import Filter from '../Filter/Filter';
-import { contactsChange } from '../../redux/contactsSlice';
+import { contactAdd } from '../../redux/contactsSlice';
 import { filterChange } from '../../redux/filterSlice';
-
 import { MainWrap } from './App.styled';
 
 export default function App() {
@@ -14,11 +11,6 @@ export default function App() {
   const filter = useSelector(state => state.filter);
 
   const dispatch = useDispatch();
-  const lStorage = localStorage.getItem('contacts');
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
 
   const addNewContact = newContact => {
     console.log('newContact:', newContact);
@@ -31,7 +23,7 @@ export default function App() {
       alert(newContact.name + ' is already in contacts.');
       return;
     }
-    dispatch(contactsChange(newContact));
+    dispatch(contactAdd(newContact));
   };
 
   const handleFilterChange = e => {
