@@ -12,19 +12,16 @@ import {
 } from 'redux-persist';
 import { contactsSlice } from './contactsSlice';
 import { filterSlice } from './filterSlice';
-import { nameSlice } from './nameSlice';
-import { numberSlice } from './numberSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['contacts'],
 };
 
 const rootReducer = combineReducers({
   contacts: contactsSlice.reducer,
   filter: filterSlice.reducer,
-  name: nameSlice.reducer,
-  number: numberSlice.reducer,
 });
 
 const persistedContactList = persistReducer(persistConfig, rootReducer);

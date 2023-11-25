@@ -1,13 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { Paragraph } from './Filter.styled';
+import { filterChange } from '../../redux/filterSlice';
 
-export default function Filter({ onFilterChange, value }) {
+export default function Filter({ value }) {
+  const dispatch = useDispatch();
+
+  const handleFilterChange = e => {
+    dispatch(filterChange(e.target.value));
+  };
+
   return (
     <div>
       <Paragraph>Find contacts by name</Paragraph>
       <input
-        onChange={onFilterChange}
+        onChange={handleFilterChange}
         value={value}
         type="text"
         name="filter"
@@ -18,8 +25,3 @@ export default function Filter({ onFilterChange, value }) {
     </div>
   );
 }
-
-Filter.propTypes = {
-  onFilterChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
-};

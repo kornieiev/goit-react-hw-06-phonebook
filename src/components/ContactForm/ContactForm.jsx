@@ -1,17 +1,18 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { nameChange } from '../../redux/nameSlice';
-import { numberChange } from '../../redux/numberSlice';
+import { contactAdd } from '../../redux/contactsSlice';
 import {
   PhonebookWrap,
   FormButton,
   FormInput,
   FormLabel,
 } from './ContactForm.styled';
+import { useState } from 'react';
 
-export default function ContactForm({ addNewContact }) {
-  const name = useSelector(state => state.name);
-  const number = useSelector(state => state.number);
+export default function ContactForm() {
+  const contacts = useSelector(state => state.contacts);
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
 
@@ -21,19 +22,31 @@ export default function ContactForm({ addNewContact }) {
       return;
     }
     addNewContact({ id: nanoid(), name, number });
-    dispatch(nameChange(''));
-    dispatch(numberChange(''));
+    setName('');
+    setNumber('');
+  };
+
+  const addNewContact = newContact => {
+    if (
+      contacts.find(contact => {
+        return contact.name.toLowerCase() === newContact.name.toLowerCase();
+      })
+    ) {
+      alert(newContact.name + ' is already in contacts.');
+      return;
+    }
+
+    dispatch(contactAdd(newContact));
   };
 
   const handleInputChange = e => {
-    e.preventDefault();
     switch (e.target.name) {
       case 'name':
-        dispatch(nameChange(e.target.value));
+        setName(e.target.value);
 
         break;
       case 'number':
-        dispatch(numberChange(e.target.value));
+        setNumber(e.target.value);
 
         break;
       default:
