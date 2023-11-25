@@ -12,11 +12,16 @@ export const FormButton = styled.button`
   border: 1px solid grey;
   border-radius: 4px;
   padding: 3px 10px;
-  width: 26%;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  &:hover {
+    background-color: #55e65c;
+  }
 `;
 
 export const FormInput = styled.input`
-  width: 40%;
+  width: 98%;
   height: 22px;
   margin-top: 5px;
 `;
