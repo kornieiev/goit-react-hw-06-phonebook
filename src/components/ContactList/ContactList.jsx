@@ -1,26 +1,17 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { contactAdd, contactDelete } from '../../redux/contactsSlice';
-import {
-  ListItem,
-  DeleteButton,
-  EditButton,
-  SaveButton,
-  CancelButton,
-  ListItemChanged,
-  InputChange,
-  DivChangeWrap,
-} from './ContactList.styled';
+import { contactDelete } from '../../redux/contactsSlice';
+import * as contactsSelectors from '../../redux/selectors';
+import { ListItem, DeleteButton, EditButton } from './ContactList.styled';
+import EditForm from 'EditForm/EditForm';
 
 export default function ContactList() {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(contactsSelectors.selectContacts);
+  const filter = useSelector(contactsSelectors.selectFilter);
 
   const dispatch = useDispatch();
 
   ///
-  const [editName, setEditName] = useState('');
-  const [editNumber, setEditNumber] = useState('');
   const [a, setA] = useState('');
 
   const contactsFilter = () => {
@@ -40,43 +31,10 @@ export default function ContactList() {
   const editContact = e => {
     contactsFilter().map(item => {
       if (item.id === e.currentTarget.value) {
-        setEditNumber(item.number);
-        setEditName(item.name);
         setA(e.currentTarget.value);
       }
       return false;
     });
-  };
-
-  const handleChange = e => {
-    switch (e.target.name) {
-      case 'name':
-        setEditName(e.target.value);
-
-        break;
-      case 'number':
-        setEditNumber(e.target.value);
-
-        break;
-      default:
-        console.log(`Unknown input ${editName}`);
-    }
-  };
-
-  const handleBtnSave = e => {
-    const newContact = { id: a, name: editName, number: editNumber };
-    contacts.map(item => {
-      if (e.target.value === item.id) {
-        dispatch(contactDelete(item.id));
-        dispatch(contactAdd(newContact));
-      }
-      return false;
-    });
-    setA('');
-  };
-
-  const handleBtnCancel = e => {
-    setA('');
   };
 
   return (
@@ -101,40 +59,7 @@ export default function ContactList() {
               </div>
             </>
           ) : (
-            <ListItemChanged>
-              <DivChangeWrap>
-                <div>
-                  <InputChange
-                    type="text"
-                    value={editName}
-                    name="name"
-                    onChange={handleChange}
-                  />
-                  <input
-                    type="text"
-                    value={editNumber}
-                    name="number"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <SaveButton
-                    value={item.id}
-                    type="button"
-                    onClick={handleBtnSave}
-                  >
-                    Save
-                  </SaveButton>
-                  <CancelButton
-                    value={item.id}
-                    type="button"
-                    onClick={handleBtnCancel}
-                  >
-                    Cancel
-                  </CancelButton>
-                </div>
-              </DivChangeWrap>
-            </ListItemChanged>
+            <EditForm item={item} setA={setA} />
           )}
         </ListItem>
       ))}

@@ -9,10 +9,22 @@ export const contactsSlice = createSlice({
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ],
   reducers: {
-    contactAdd: (state, action) => [action.payload, ...state],
-    contactDelete: (state, action) =>
-      state.filter(contact => contact.id !== action.payload),
+    contactAdd: (state, action) => {
+      return [action.payload, ...state];
+    },
+    contactDelete: (state, action) => {
+      return state.filter(contact => {
+        return contact.id !== action.payload;
+      });
+    },
+    contactUpdate: (state, action) => {
+      const index = state.findIndex(
+        contact => contact.id === action.payload.id
+      );
+      state.splice(index, 1, action.payload);
+    },
   },
 });
 
-export const { contactAdd, contactDelete } = contactsSlice.actions;
+export const { contactAdd, contactDelete, contactUpdate } =
+  contactsSlice.actions;
