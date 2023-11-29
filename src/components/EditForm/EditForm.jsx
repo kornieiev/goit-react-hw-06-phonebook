@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { contactUpdate } from '../redux/contactsSlice';
-import * as contactsSelectors from '../redux/selectors';
+import { contactUpdate } from '../../redux/contactsSlice';
+import * as contactsSelectors from '../../redux/selectors';
 import {
   SaveButton,
   CancelButton,
@@ -10,11 +10,11 @@ import {
 } from './EditForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function EditForm(item) {
+export default function EditForm(props) {
   const contacts = useSelector(contactsSelectors.selectContacts);
 
-  const [editName, setEditName] = useState(item.item.name);
-  const [editNumber, setEditNumber] = useState(item.item.number);
+  const [editName, setEditName] = useState(props.item.name);
+  const [editNumber, setEditNumber] = useState(props.item.number);
 
   const dispatch = useDispatch();
 
@@ -33,25 +33,33 @@ export default function EditForm(item) {
     }
   };
 
-  const handleBtnSave = e => {
-    const newContact = { id: item.item.id, name: editName, number: editNumber };
-    contacts.map(i => {
-      if (item.item.id === i.id) {
-        dispatch(contactUpdate(newContact));
-      }
-      return false;
-    });
-    item.setA('');
+  const handleBtnSave = () => {
+    const newContact = {
+      id: props.item.id,
+      name: editName,
+      number: editNumber,
+    };
+    if (
+      contacts.find(contact => {
+        return contact.name.toLowerCase() === newContact.name.toLowerCase();
+      })
+    ) {
+      alert(newContact.name + ' is already in contacts.');
+      return;
+    } else {
+      dispatch(contactUpdate(newContact));
+      props.setEdit('');
+    }
   };
 
   const handleBtnCancel = e => {
-    item.setA('');
+    props.setEdit('');
   };
 
   return (
     <ListItemChanged>
       <DivChangeWrap>
-        <div>
+        <form>
           <InputChange
             type="text"
             value={editName}
@@ -64,12 +72,20 @@ export default function EditForm(item) {
             name="number"
             onChange={handleChange}
           />
-        </div>
+        </form>
         <div>
-          <SaveButton value={item.id} type="button" onClick={handleBtnSave}>
+          <SaveButton
+            value={props.item.id}
+            type="button"
+            onClick={handleBtnSave}
+          >
             Save
           </SaveButton>
-          <CancelButton value={item.id} type="button" onClick={handleBtnCancel}>
+          <CancelButton
+            value={props.item.id}
+            type="button"
+            onClick={handleBtnCancel}
+          >
             Cancel
           </CancelButton>
         </div>

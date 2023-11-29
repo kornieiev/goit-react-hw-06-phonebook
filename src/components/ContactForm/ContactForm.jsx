@@ -18,7 +18,7 @@ export default function ContactForm() {
 
   const dispatch = useDispatch();
 
-  const handleBtnClick = e => {
+  const handleSubmit = e => {
     e.preventDefault();
     if (!name && !number) {
       return;
@@ -37,7 +37,6 @@ export default function ContactForm() {
       alert(newContact.name + ' is already in contacts.');
       return;
     }
-
     dispatch(contactAdd(newContact));
   };
 
@@ -57,7 +56,7 @@ export default function ContactForm() {
   };
   return (
     <div>
-      <PhonebookWrap onSubmit={handleBtnClick}>
+      <PhonebookWrap onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <FormInput
           id="name"

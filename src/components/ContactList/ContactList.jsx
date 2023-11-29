@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { contactDelete } from '../../redux/contactsSlice';
 import * as contactsSelectors from '../../redux/selectors';
 import { ListItem, DeleteButton, EditButton } from './ContactList.styled';
-import EditForm from 'EditForm/EditForm';
+import EditForm from 'components/EditForm/EditForm';
 
 export default function ContactList() {
   const contacts = useSelector(contactsSelectors.selectContacts);
@@ -12,7 +12,7 @@ export default function ContactList() {
   const dispatch = useDispatch();
 
   ///
-  const [a, setA] = useState('');
+  const [edit, setEdit] = useState('');
 
   const contactsFilter = () => {
     const normalizeFilter = filter.toLowerCase();
@@ -29,19 +29,15 @@ export default function ContactList() {
   };
 
   const editContact = e => {
-    contactsFilter().map(item => {
-      if (item.id === e.currentTarget.value) {
-        setA(e.currentTarget.value);
-      }
-      return false;
-    });
+    setEdit(e.currentTarget.value);
+    // тут ми вказуємо який конкретно контакт потрібно переключити у режим редагування
   };
 
   return (
     <>
       {contactsFilter().map(item => (
         <ListItem key={item.id}>
-          {a !== item.id ? (
+          {edit !== item.id ? (
             <>
               <div>
                 {item.name}: {item.number}
@@ -59,7 +55,7 @@ export default function ContactList() {
               </div>
             </>
           ) : (
-            <EditForm item={item} setA={setA} />
+            <EditForm item={item} setEdit={setEdit} />
           )}
         </ListItem>
       ))}
