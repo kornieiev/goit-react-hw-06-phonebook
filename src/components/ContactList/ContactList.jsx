@@ -28,11 +28,6 @@ export default function ContactList() {
     dispatch(contactDelete(id));
   };
 
-  const editContact = e => {
-    setEdit(e.currentTarget.value);
-    // тут ми вказуємо який конкретно контакт потрібно переключити у режим редагування
-  };
-
   return (
     <>
       {contactsFilter().map(item => (
@@ -43,7 +38,13 @@ export default function ContactList() {
                 {item.name}: {item.number}
               </div>
               <div>
-                <EditButton type="button" value={item.id} onClick={editContact}>
+                <EditButton
+                  type="button"
+                  value={item.id}
+                  onClick={e => {
+                    setEdit(e.currentTarget.value);
+                  }}
+                >
                   Edit
                 </EditButton>
                 <DeleteButton
